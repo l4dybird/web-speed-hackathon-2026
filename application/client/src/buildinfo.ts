@@ -2,7 +2,6 @@ declare global {
   var __BUILD_INFO__: {
     BUILD_DATE: string | undefined;
     COMMIT_HASH: string | undefined;
-    PR_CANARY: string;
   };
 }
 
@@ -10,7 +9,6 @@ declare global {
 window.__BUILD_INFO__ = {
   BUILD_DATE: process.env["BUILD_DATE"],
   COMMIT_HASH: process.env["COMMIT_HASH"],
-  PR_CANARY: "PR212-CANARY-20260320-A1",
 };
 
 export {};
