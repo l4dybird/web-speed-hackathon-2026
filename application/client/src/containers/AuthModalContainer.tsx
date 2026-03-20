@@ -13,6 +13,7 @@ import {
 interface Props {
   id: string;
   onUpdateActiveUser: (user: Models.User) => void;
+  openOnMount?: boolean;
 }
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -39,7 +40,7 @@ function getErrorCode(err: unknown, type: "signin" | "signup"): string {
   return ERROR_MESSAGES[responseJSON.code]!;
 }
 
-export const AuthModalContainer = ({ id, onUpdateActiveUser }: Props) => {
+export const AuthModalContainer = ({ id, onUpdateActiveUser, openOnMount = false }: Props) => {
   const ref = useRef<HTMLDialogElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [resetKey, setResetKey] = useState(0);
@@ -61,6 +62,12 @@ export const AuthModalContainer = ({ id, onUpdateActiveUser }: Props) => {
       abortControllerRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (openOnMount) {
+      ref.current?.showModal();
+    }
+  }, [openOnMount]);
 
   const handleRequestCloseModal = useCallback(() => {
     abortControllerRef.current?.abort();

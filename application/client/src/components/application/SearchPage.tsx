@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import { Field, InjectedFormProps, reduxForm, WrappedFieldProps } from "redux-form";
 
@@ -41,34 +41,8 @@ const SearchPageComponent = ({
   handleSubmit,
 }: Props & InjectedFormProps<SearchFormData, Props>) => {
   const navigate = useNavigate();
-  const [isNegative, setIsNegative] = useState(false);
 
   const parsed = parseSearchQuery(query);
-
-  useEffect(() => {
-    if (!parsed.keywords) {
-      setIsNegative(false);
-      return;
-    }
-
-    let isMounted = true;
-    import("@web-speed-hackathon-2026/client/src/utils/negaposi_analyzer")
-      .then(({ analyzeSentiment }) => analyzeSentiment(parsed.keywords))
-      .then((result) => {
-        if (isMounted) {
-          setIsNegative(result.label === "negative");
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          setIsNegative(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [parsed.keywords]);
 
   const searchConditionText = useMemo(() => {
     const parts: string[] = [];
@@ -111,17 +85,6 @@ const SearchPageComponent = ({
             {searchConditionText} の検索結果 ({results.length} 件)
           </h2>
         </div>
-      )}
-
-      {isNegative && (
-        <article className="hover:bg-cax-surface-subtle px-1 sm:px-4">
-          <div className="border-cax-border flex border-b px-2 pt-2 pb-4 sm:px-4">
-            <div>
-              <p className="text-cax-text text-lg font-bold">どしたん話聞こうか?</p>
-              <p className="text-cax-text-muted">言わなくてもいいけど、言ってもいいよ。</p>
-            </div>
-          </div>
-        </article>
       )}
 
       {query && results.length === 0 ? (
