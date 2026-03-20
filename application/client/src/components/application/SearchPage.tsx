@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   Field,
@@ -22,6 +22,8 @@ interface Props {
   query: string;
   results: Models.Post[];
 }
+
+type SentimentLabel = "positive" | "negative" | "neutral";
 
 const SearchInput = ({ input, meta }: WrappedFieldProps) => {
   const showError = (meta.touched || meta.submitFailed) && meta.error;
@@ -51,6 +53,34 @@ const SearchPageComponent = ({
   const navigate = useNavigate();
 
   const parsed = parseSearchQuery(query);
+  const [sentimentLabel, setSentimentLabel] = useState<SentimentLabel>("neutral");
+
+  useEffect(() => {
+    let active = true;
+
+    if (!parsed.keywords) {
+      setSentimentLabel("neutral");
+      return;
+    }
+
+    void import("@web-speed-hackathon-2026/client/src/utils/negaposi_analyzer")
+      .then(({ analyzeSentiment }) => analyzeSentiment(parsed.keywords))
+      .then((result) => {
+        if (active) {
+          setSentimentLabel(result.label);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        if (active) {
+          setSentimentLabel("neutral");
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [parsed.keywords]);
 
   const searchConditionText = useMemo(() => {
     const parts: string[] = [];
@@ -101,8 +131,16 @@ const SearchPageComponent = ({
       )}
 
       {query && results.length === 0 ? (
-        <div className="text-cax-text-muted flex items-center justify-center p-8">
-          検索結果が見つかりませんでした
+        <div className="flex flex-col items-center justify-center gap-3 p-8 text-center">
+          {sentimentLabel === "negative" ? (
+            <>
+              <p className="text-cax-brand text-xl font-bold">どしたん話聞こうか?</p>
+              <p className="text-cax-text-muted text-sm">
+                言わなくてもいいけど、言ってもいいよ。
+              </p>
+            </>
+          ) : null}
+          <p className="text-cax-text-muted">検索結果が見つかりませんでした</p>
         </div>
       ) : (
         <Timeline timeline={results} />

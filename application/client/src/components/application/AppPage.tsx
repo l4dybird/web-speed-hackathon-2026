@@ -5,6 +5,7 @@ import { Navigation } from "@web-speed-hackathon-2026/client/src/components/appl
 interface Props {
   activeUser: Models.User | null;
   children: ReactNode;
+  isLoadingActiveUser: boolean;
   onOpenAuthModal: () => void;
   onOpenNewPostModal: () => void;
   onLogout: () => void;
@@ -13,6 +14,7 @@ interface Props {
 export const AppPage = ({
   activeUser,
   children,
+  isLoadingActiveUser,
   onOpenAuthModal,
   onOpenNewPostModal,
   onLogout,
@@ -23,6 +25,7 @@ export const AppPage = ({
         <aside className="relative z-10">
           <Navigation
             activeUser={activeUser}
+            isLoadingActiveUser={isLoadingActiveUser}
             onOpenAuthModal={onOpenAuthModal}
             onOpenNewPostModal={onOpenNewPostModal}
             onLogout={onLogout}

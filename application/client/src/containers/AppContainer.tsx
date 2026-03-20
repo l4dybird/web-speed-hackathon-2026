@@ -5,7 +5,7 @@ import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { AppPage } from "@web-speed-hackathon-2026/client/src/components/application/AppPage";
 import { NotFoundContainer } from "@web-speed-hackathon-2026/client/src/containers/NotFoundContainer";
 import { TimelineContainer } from "@web-speed-hackathon-2026/client/src/containers/TimelineContainer";
-import { fetchJSON, sendJSON } from "@web-speed-hackathon-2026/client/src/utils/fetchers";
+import { FetchError, fetchJSON, sendJSON } from "@web-speed-hackathon-2026/client/src/utils/fetchers";
 
 const AuthModalContainer = lazy(async () => {
   const mod = await import("@web-speed-hackathon-2026/client/src/containers/AuthModalContainer");
@@ -60,6 +60,15 @@ export const AppContainer = () => {
       .then((user) => {
         setActiveUser(user);
       })
+      .catch((error: unknown) => {
+        if (error instanceof FetchError && error.status === 401) {
+          setActiveUser(null);
+          return;
+        }
+
+        console.error(error);
+        setActiveUser(null);
+      })
       .finally(() => {
         setIsLoadingActiveUser(false);
       });
@@ -93,20 +102,16 @@ export const AppContainer = () => {
     setShouldRenderNewPostModal(true);
   }, [newPostModalId]);
 
-  if (isLoadingActiveUser) {
-    return (
-      <HelmetProvider>
+  return (
+    <HelmetProvider>
+      {isLoadingActiveUser ? (
         <Helmet>
           <title>読込中 - CaX</title>
         </Helmet>
-      </HelmetProvider>
-    );
-  }
-
-  return (
-    <HelmetProvider>
+      ) : null}
       <AppPage
         activeUser={activeUser}
+        isLoadingActiveUser={isLoadingActiveUser}
         onOpenAuthModal={handleOpenAuthModal}
         onOpenNewPostModal={handleOpenNewPostModal}
         onLogout={handleLogout}

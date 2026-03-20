@@ -1,5 +1,8 @@
 import { lazy, Suspense } from "react";
 
+import { AspectRatioBox } from "@web-speed-hackathon-2026/client/src/components/foundation/AspectRatioBox";
+import { MediaPlaceholder } from "@web-speed-hackathon-2026/client/src/components/foundation/MediaPlaceholder";
+import { useNearScreen } from "@web-speed-hackathon-2026/client/src/hooks/use_near_screen";
 import { getMoviePath } from "@web-speed-hackathon-2026/client/src/utils/get_path";
 
 const PausableMovie = lazy(async () => {
@@ -12,14 +15,29 @@ interface Props {
 }
 
 export const MovieArea = ({ movie }: Props) => {
+  const { isNearScreen, ref } = useNearScreen<HTMLDivElement>({ rootMargin: "400px 0px" });
+
   return (
     <div
       className="border-cax-border bg-cax-surface-subtle relative h-full w-full overflow-hidden rounded-lg border"
       data-movie-area
+      ref={ref}
     >
-      <Suspense fallback={null}>
-        <PausableMovie src={getMoviePath(movie.id)} />
-      </Suspense>
+      {isNearScreen ? (
+        <Suspense
+          fallback={
+            <AspectRatioBox aspectHeight={1} aspectWidth={1}>
+              <MediaPlaceholder />
+            </AspectRatioBox>
+          }
+        >
+          <PausableMovie src={getMoviePath(movie.id)} />
+        </Suspense>
+      ) : (
+        <AspectRatioBox aspectHeight={1} aspectWidth={1}>
+          <MediaPlaceholder />
+        </AspectRatioBox>
+      )}
     </div>
   );
 };
