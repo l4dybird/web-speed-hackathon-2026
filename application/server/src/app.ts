@@ -18,5 +18,10 @@ app.use("/api/v1", (_req, res, next) => {
   return next();
 });
 
+app.use((_req, res, next) => {
+  res.setHeader("X-Debug-Canary", "PR212-CANARY-20260320-A1");
+  return next();
+});
+
 app.use("/api/v1", apiRouter);
 app.use(staticRouter);
