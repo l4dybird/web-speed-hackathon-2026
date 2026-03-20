@@ -126,21 +126,7 @@ const config = {
   },
   optimization: {
     minimize: isProd,
-    runtimeChunk: isProd ? "single" : false,
-    splitChunks: isProd
-      ? {
-          chunks: "all",
-          cacheGroups: {
-            defaultVendors: {
-              reuseExistingChunk: true,
-            },
-            default: {
-              minChunks: 2,
-              reuseExistingChunk: true,
-            },
-          },
-        }
-      : false,
+    splitChunks: isProd ? { chunks: "async" } : false,
     concatenateModules: isProd,
     usedExports: isProd,
     providedExports: isProd,
