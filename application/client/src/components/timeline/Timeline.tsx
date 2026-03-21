@@ -8,7 +8,7 @@ export const Timeline = ({ timeline }: Props) => {
   return (
     <section>
       {timeline.map((post, idx) => {
-        return <TimelineItem key={post.id} post={post} prioritizeMedia={idx === 0} />;
+        return <TimelineItem key={post.id} post={post} prioritizeMedia={idx < 4} />;
       })}
     </section>
   );

@@ -4,8 +4,6 @@ import { Route, Routes, useLocation } from "react-router";
 
 import { AppPage } from "@web-speed-hackathon-2026/client/src/components/application/AppPage";
 import { RouteLoadingPage } from "@web-speed-hackathon-2026/client/src/components/application/RouteLoadingPage";
-import { DirectMessageContainer } from "@web-speed-hackathon-2026/client/src/containers/DirectMessageContainer";
-import { DirectMessageListContainer } from "@web-speed-hackathon-2026/client/src/containers/DirectMessageListContainer";
 import { NotFoundContainer } from "@web-speed-hackathon-2026/client/src/containers/NotFoundContainer";
 import { TimelineContainer } from "@web-speed-hackathon-2026/client/src/containers/TimelineContainer";
 import { FetchError, fetchJSON, sendJSON } from "@web-speed-hackathon-2026/client/src/utils/fetchers";
@@ -17,6 +15,16 @@ const AuthModalContainer = lazy(async () => {
 const CrokContainer = lazy(async () => {
   const mod = await import("@web-speed-hackathon-2026/client/src/containers/CrokContainer");
   return { default: mod.CrokContainer };
+});
+const DirectMessageContainer = lazy(async () => {
+  const mod = await import("@web-speed-hackathon-2026/client/src/containers/DirectMessageContainer");
+  return { default: mod.DirectMessageContainer };
+});
+const DirectMessageListContainer = lazy(async () => {
+  const mod = await import(
+    "@web-speed-hackathon-2026/client/src/containers/DirectMessageListContainer"
+  );
+  return { default: mod.DirectMessageListContainer };
 });
 const NewPostModalContainer = lazy(async () => {
   const mod = await import("@web-speed-hackathon-2026/client/src/containers/NewPostModalContainer");
@@ -130,19 +138,23 @@ export const AppContainer = () => {
           <Route element={<TimelineContainer />} path="/" />
           <Route
             element={
-              <DirectMessageListContainer
-                activeUser={activeUser}
-                onOpenAuthModal={handleOpenAuthModal}
-              />
+              <Suspense fallback={<RouteLoadingPage />}>
+                <DirectMessageListContainer
+                  activeUser={activeUser}
+                  onOpenAuthModal={handleOpenAuthModal}
+                />
+              </Suspense>
             }
             path="/dm"
           />
           <Route
             element={
-              <DirectMessageContainer
-                activeUser={activeUser}
-                onOpenAuthModal={handleOpenAuthModal}
-              />
+              <Suspense fallback={<RouteLoadingPage />}>
+                <DirectMessageContainer
+                  activeUser={activeUser}
+                  onOpenAuthModal={handleOpenAuthModal}
+                />
+              </Suspense>
             }
             path="/dm/:conversationId"
           />

@@ -182,3 +182,116 @@
   vertical-align: -0.125em;
   width: 1em;
 }
+
+.app-boot-preview {
+  background: var(--color-cax-canvas);
+  color: var(--color-cax-text);
+  min-height: 100vh;
+}
+
+.app-boot-preview__frame {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-boot-preview__sidebar {
+  display: none;
+}
+
+.app-boot-preview__main {
+  background: var(--color-cax-surface);
+  min-height: 100vh;
+  width: min(100vw, 40rem);
+}
+
+.app-boot-preview__post {
+  border-bottom: 1px solid var(--color-cax-border);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.app-boot-preview__avatar {
+  background: var(--color-cax-surface-subtle);
+  border: 1px solid var(--color-cax-border);
+  border-radius: 9999px;
+  flex-shrink: 0;
+  height: 4rem;
+  object-fit: cover;
+  width: 4rem;
+}
+
+.app-boot-preview__content {
+  min-width: 0;
+}
+
+.app-boot-preview__meta {
+  color: var(--color-cax-text-muted);
+  font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-boot-preview__author {
+  color: var(--color-cax-text);
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+.app-boot-preview__text {
+  line-height: 1.625;
+  margin-top: 0.25rem;
+}
+
+.app-boot-preview__media {
+  background: var(--color-cax-surface-subtle);
+  border: 1px solid var(--color-cax-border);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.app-boot-preview__media img {
+  aspect-ratio: 16 / 9;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.app-boot-preview__media-placeholder {
+  align-items: center;
+  aspect-ratio: 16 / 9;
+  color: var(--color-cax-text-subtle);
+  display: flex;
+  font-size: 0.75rem;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 1024px) {
+  .app-boot-preview__sidebar {
+    background: var(--color-cax-surface);
+    border-right: 1px solid var(--color-cax-border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 100vh;
+    padding: 1rem;
+    width: 12rem;
+  }
+
+  .app-boot-preview__nav-item {
+    color: var(--color-cax-text);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .app-boot-preview__main {
+    border-left: 1px solid var(--color-cax-border);
+    border-right: 1px solid var(--color-cax-border);
+  }
+}
