@@ -12,6 +12,9 @@ interface Props {
 
 export const DirectMessageListContainer = ({ activeUser, onOpenAuthModal }: Props) => {
   const newDmModalId = useId();
+  const handleOpenNewDmModal = () => {
+    (document.getElementById(newDmModalId) as HTMLDialogElement | null)?.showModal();
+  };
 
   if (activeUser === null) {
     return (
@@ -27,7 +30,7 @@ export const DirectMessageListContainer = ({ activeUser, onOpenAuthModal }: Prop
       <Helmet>
         <title>ダイレクトメッセージ - CaX</title>
       </Helmet>
-      <DirectMessageListPage activeUser={activeUser} newDmModalId={newDmModalId} />
+      <DirectMessageListPage activeUser={activeUser} onOpenNewDmModal={handleOpenNewDmModal} />
       <NewDirectMessageModalContainer id={newDmModalId} />
     </>
   );

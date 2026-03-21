@@ -18,10 +18,10 @@ interface DirectMessageConversationSummary {
 
 interface Props {
   activeUser: Models.User;
-  newDmModalId: string;
+  onOpenNewDmModal: () => void;
 }
 
-export const DirectMessageListPage = ({ activeUser, newDmModalId }: Props) => {
+export const DirectMessageListPage = ({ activeUser, onOpenNewDmModal }: Props) => {
   const [conversations, setConversations] = useState<Array<DirectMessageConversationSummary> | null>(
     null,
   );
@@ -62,9 +62,8 @@ export const DirectMessageListPage = ({ activeUser, newDmModalId }: Props) => {
         <h1 className="text-2xl font-bold">ダイレクトメッセージ</h1>
         <div className="flex flex-wrap items-center gap-4">
           <Button
-            command="show-modal"
-            commandfor={newDmModalId}
             leftItem={<FontAwesomeIcon iconType="paper-plane" styleType="solid" />}
+            onClick={onOpenNewDmModal}
           >
             新しくDMを始める
           </Button>

@@ -8,16 +8,16 @@ import { NewDirectMessageFormData } from "@web-speed-hackathon-2026/client/src/d
 import { validate } from "@web-speed-hackathon-2026/client/src/direct_message/validation";
 
 interface Props {
-  id: string;
+  onRequestCloseModal: () => void;
   onSubmit: (values: NewDirectMessageFormData) => Promise<void>;
 }
 
 const NewDirectMessageModalPageComponent = ({
-  id,
   invalid,
   error,
   submitting,
   handleSubmit,
+  onRequestCloseModal,
   onSubmit,
 }: Props & InjectedFormProps<NewDirectMessageFormData, Props>) => {
   return (
@@ -39,7 +39,7 @@ const NewDirectMessageModalPageComponent = ({
           <ModalSubmitButton disabled={submitting || invalid} loading={submitting}>
             DMを開始
           </ModalSubmitButton>
-          <Button variant="secondary" command="close" commandfor={id}>
+          <Button onClick={onRequestCloseModal} variant="secondary">
             キャンセル
           </Button>
         </div>

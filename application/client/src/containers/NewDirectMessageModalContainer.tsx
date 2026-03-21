@@ -29,6 +29,10 @@ export const NewDirectMessageModalContainer = ({ id }: Props) => {
 
   const navigate = useNavigate();
 
+  const handleRequestCloseModal = useCallback(() => {
+    ref.current?.close();
+  }, []);
+
   const handleSubmit = useCallback(
     async (values: NewDirectMessageFormData) => {
       try {
@@ -40,22 +44,24 @@ export const NewDirectMessageModalContainer = ({ id }: Props) => {
           `dm:conversation:${conversation.id}`,
           JSON.stringify(conversation),
         );
+        handleRequestCloseModal();
         navigate(`/dm/${conversation.id}`);
-        requestAnimationFrame(() => {
-          window.dispatchEvent(new Event("load"));
-        });
       } catch {
         throw new SubmissionError({
           _error: "ユーザーが見つかりませんでした",
         });
       }
     },
-    [navigate],
+    [handleRequestCloseModal, navigate],
   );
 
   return (
     <Modal id={id} ref={ref} closedby="any">
-      <NewDirectMessageModalPage key={resetKey} id={id} onSubmit={handleSubmit} />
+      <NewDirectMessageModalPage
+        key={resetKey}
+        onRequestCloseModal={handleRequestCloseModal}
+        onSubmit={handleSubmit}
+      />
     </Modal>
   );
 };
